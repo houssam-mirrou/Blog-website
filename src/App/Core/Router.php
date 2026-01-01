@@ -20,7 +20,6 @@ class Router
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $request_method = $_SERVER['REQUEST_METHOD'];
         if (isset($this->routes[$request_method][$uri])) {
-            echo 'i\'m here';
             [$controller_name, $method_name] = explode('@', $this->routes[$request_method][$uri]);
             $controller_class = "App\\Controllers\\$controller_name";
             $controller = new $controller_class();
