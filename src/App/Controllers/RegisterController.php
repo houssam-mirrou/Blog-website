@@ -10,4 +10,7 @@ class RegisterController extends Controller {
             'title'=> 'Sign up'
         ]);
     } 
+    public function create_account() {
+        
+    }
 }
