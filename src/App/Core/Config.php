@@ -1,10 +1,19 @@
 <?php
 
-return [
-    'database' => [
-        'host' => 'db',
-        'port' => 3306,
-        'dbname' => 'biblio_db',
-        'charset' => 'utf8mb4'
-    ]
-];
+namespace App\Core;
+
+class Config
+{
+
+    public static function get_config()
+    {
+        return [
+            'database' => [
+                'host' => 'db',
+                'port' => 3306,
+                'dbname' => 'blog_db',
+                'charset' => 'utf8mb4'
+            ]
+        ];
+    }
+}

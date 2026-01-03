@@ -51,7 +51,7 @@ create table article_report (
     user_id int not null,
     article_id int not null,
     body varchar(500),
-    reason ENUM('Spam or misleading','Harassment or hate speech','Inappropriate content','Other') not null
+    reason ENUM('Spam or misleading','Harassment or hate speech','Inappropriate content','Other') not null,
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (article_id) REFERENCES articles(id) 
@@ -62,7 +62,7 @@ create table comment_report (
     user_id int not null,
     comment_id int not null,
     body varchar(500),
-    reason ENUM('Spam or misleading','Harassment or hate speech','Inappropriate content','Other') not null
+    reason ENUM('Spam or misleading','Harassment or hate speech','Inappropriate content','Other') not null,
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (comment_id) REFERENCES comments(id)

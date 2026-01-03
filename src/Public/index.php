@@ -5,9 +5,6 @@ $config = require __DIR__ . '/../App/Core/Config.php';
 
 use App\Core\Functions;
 use App\Core\Router;
-use App\Core\DataBase;
-
-$data = new DataBase($config['database']);
 
 $router = new Router();
 $router->get('/','HomeController@index');
@@ -18,7 +15,7 @@ $router->get('/community','CommunityController@index');
 $router->get('/about','AboutController@index');
 $router->get('/contact','ContactController@index');
 $router->get('/article','ArticleController@index');
-
+$router->post('/register','RegisterController@create_account');
 
 
 $router->dispatch();
