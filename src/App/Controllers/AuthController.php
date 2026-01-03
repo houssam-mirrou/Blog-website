@@ -10,7 +10,7 @@ class AuthController {
         if ($errors === true) {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             $query =
-                'INSERT into users (firstName,lastName,email,phone_number,password) 
+                'INSERT into users (first_name,last_name,email,phone_number,password) 
                 values (:first_name,:last_name,:email,:phone_number,:password)';
             $params = [
                 'first_name' => $first_name,
