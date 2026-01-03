@@ -10,7 +10,7 @@
             <div class="flex flex-row gap-3">
                 <div class="w-1/2">
                     <label class="block text-sm font-medium text-slate-700 mb-1">First name</label>
-                    <input name="first_name" type="text" placeholder="John" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition" required>
+                    <input value="<?= !isset($reader) ? '' : $reader->get_first_name() ?>" name="first_name" type="text" placeholder="John" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition" required>
                     <?php
                     if (isset($errors['first_name'])) {
                         echo '<p class="mt-2 text-sm text-red-600 dark:text-red-400">
@@ -21,7 +21,7 @@
                 </div>
                 <div class="w-1/2">
                     <label class="block text-sm font-medium text-slate-700 mb-1">Last name</label>
-                    <input name="last_name" type="text" placeholder="Doe" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition" required>
+                    <input value="<?= !isset($reader) ? '' : $reader->get_last_name() ?>" name="last_name" type="text" placeholder="Doe" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition" required>
                     <?php
                     if (isset($errors['last_name'])) {
                         echo '<p class="mt-2 text-sm text-red-600 dark:text-red-400">
@@ -34,7 +34,7 @@
 
             <div>
                 <label class="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
-                <input name="email" type="email" placeholder="you@example.com" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition" required>
+                <input value="<?= !isset($reader) ? '' : $reader->get_email() ?>" name="email" type="email" placeholder="you@example.com" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition" required>
                 <?php
                 if (isset($errors['email'])) {
                     echo '<p class="mt-2 text-sm text-red-600 dark:text-red-400">
@@ -46,7 +46,7 @@
 
             <div>
                 <label class="block text-sm font-medium text-slate-700 mb-1">Phone Number</label>
-                <input name="phone_number" type="text" placeholder="+212 611223344" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition" required>
+                <input value="<?= !isset($reader) ? '' : $reader->get_phone_number() ?>" name="phone_number" type="text" placeholder="+212 611223344" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition" required>
                 <?php
                 if (isset($errors['phone_number'])) {
                     echo '<p class="mt-2 text-sm text-red-600 dark:text-red-400">

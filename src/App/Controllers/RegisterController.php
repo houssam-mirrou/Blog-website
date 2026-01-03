@@ -6,6 +6,7 @@ use App\Core\Controller;
 use App\Core\Functions;
 use App\Core\Config;
 use App\Core\DataBase;
+use App\Models\Reader;
 
 class RegisterController extends Controller {
     public function index() {
@@ -22,7 +23,7 @@ class RegisterController extends Controller {
         $reconfirm_password = $_POST['reconfirm_password'];
         $config = Config::get_config();
         $data = new DataBase($config['database']);
-
+        $reader = new Reader($first_name,$last_name,$email,$phone_number);
         $errors = AuthController::sign_up($data,$email,$password,$first_name,$last_name,$phone_number,$reconfirm_password);
         if($errors === true){
             header('Location: /login');
@@ -31,7 +32,8 @@ class RegisterController extends Controller {
         else {
             $this->view('register',[
             'title'=> 'Sign up',
-            'errors'=> $errors
+            'errors'=> $errors,
+            'reader'=> $reader
         ]);
         }
     }
