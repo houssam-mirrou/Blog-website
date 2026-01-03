@@ -10,4 +10,8 @@ class LogInController extends Controller {
             'title' => 'Sign In'
         ]);
     }
+
+    public function sign_in() {
+        
+    }
 }

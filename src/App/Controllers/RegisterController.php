@@ -28,5 +28,11 @@ class RegisterController extends Controller {
             header('Location: /login');
             exit();
         }
+        else {
+            $this->view('register',[
+            'title'=> 'Sign up',
+            'errors'=> $errors
+        ]);
+        }
     }
 }
