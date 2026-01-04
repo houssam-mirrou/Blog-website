@@ -46,5 +46,7 @@ $router->get('/profile','ProfileController@index');
 $router->get('/upgrade-role','UpgradeRoleController@index');
 $router->post('/upgrade-role','UpgradeRoleController@upgrade');
 
+//Author Dashboard
+$router->get('/dashboard-author','DashboardAuthorController@index');
 
 $router->dispatch();
