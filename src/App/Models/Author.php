@@ -4,9 +4,9 @@ namespace App\Models;
 
 class Author extends User {
     private $role;
-    public function __construct($first_name, $last_name, $email, $phone_number)
+    public function __construct($first_name, $last_name, $email, $phone_number,$created_date)
     {
-        return parent::__construct($first_name, $last_name, $email, $phone_number);
+        parent::__construct($first_name, $last_name, $email, $phone_number,$created_date);
         $this->role = 'author';
     }
     public function get_role(){

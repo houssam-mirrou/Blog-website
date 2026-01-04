@@ -4,18 +4,20 @@ namespace App\Core;
 
 class Session
 {
-    public function __construct()
+    public static function start_session()
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
     }
 
-    public function destroy_session(){
+    public static function destroy_session(){
         $_SESSION=[];
         unset($_SESSION);
         session_destroy();
     }
 
-    public function set_user($user)
+    public static function set_user($user)
     {
         $_SESSION['current_user'] = $user;
     }

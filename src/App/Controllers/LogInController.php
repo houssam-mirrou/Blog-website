@@ -33,15 +33,15 @@ class LogInController extends Controller
             $user = AuthController::get_current_user($data, $email);
             $role = AuthController::get_role($data, $email);
             if ($role == 'admin') {
-                $session_user = new Admin($user['first_name'], $user['last_name'], $user['email'], $user['phone_number']);
+                $session_user = new Admin($user['first_name'], $user['last_name'], $user['email'], $user['phone_number'],$user['created_date']);
             } else if ($role == 'reader') {
-                $session_user = new Reader($user['first_name'], $user['last_name'], $user['email'], $user['phone_number']);
+                $session_user = new Reader($user['first_name'], $user['last_name'], $user['email'], $user['phone_number'],$user['created_date']);
             } else {
-                $session_user = new Author($user['first_name'], $user['last_name'], $user['email'], $user['phone_number']);
+                $session_user = new Author($user['first_name'], $user['last_name'], $user['email'], $user['phone_number'],$user['created_date']);
             }
-            $session = new Session();
-            $session->set_user($session_user);
+            Session::set_user($session_user);
             header('Location: /');
+            exit();
         } else {
             $this->view('login', [
                 'title' => 'Sign In',
