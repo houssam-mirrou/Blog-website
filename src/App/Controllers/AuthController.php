@@ -110,10 +110,12 @@ class AuthController {
             'email' => $email
         ];
         $result = $data->query($query, $params);
+        if($result == []){
+            return false;
+        }
         if (password_verify($password, $result[0]['password'])) {
             return true;
-        } 
-        return false;
+        }
     }
 
     private static function validate_password($password, $reconfirm_password)
