@@ -24,6 +24,9 @@ $router->post('/register', 'RegisterController@create_account');
 $router->get('/login', 'LogInController@index');
 $router->post('/login', 'LogInController@sign_in');
 
+//logout
+$router->get('/logout','LogOutController@log_out');
+
 //explore
 $router->get('/explore', 'ExploreController@index');
 
