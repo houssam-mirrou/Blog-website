@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Articles;
 use App\Repositories\ArticleRepository;
-use App\Repositories\ArticleCategoryRepository;
+use App\Services\ArticleCategoryServices;
 
 class ArticleServices
 {
@@ -36,5 +36,12 @@ class ArticleServices
             $this->article_category_repository->add_article_category($article_id,$cat_id);
         }
         return true;
+    }
+    public function get_count_of_articles_by_author($author_id){
+        return $this->article_repository->get_count_of_articles_by_author($author_id);
+    }
+
+    public function get_all_articles(){
+        return $this->article_repository->get_all_articles();
     }
 }

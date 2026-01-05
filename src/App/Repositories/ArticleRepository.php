@@ -16,7 +16,7 @@ class ArticleRepository {
     }
 
     public function get_all_articles(){
-        $query = 'SELECT * from category;';
+        $query = 'SELECT * from articles;';
         $result = $this->data->query($query);
         return $result;
     }
@@ -32,5 +32,14 @@ class ArticleRepository {
         $result = $this->data->query($article_query,$article_params);
         $article_id = $this->data->get_last_inserted_id_query();
         return $article_id;
+    }
+
+    public function get_count_of_articles_by_author($author_id){
+        $query = 'SELECT count(*) as count from articles where author_id=:author_id';
+        $params = [
+            'author_id' => $author_id
+        ];
+        $result = $this->data->query($query,$params);
+        return $result[0]['count'];
     }
 }
