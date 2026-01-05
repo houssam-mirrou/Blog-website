@@ -18,8 +18,12 @@
 
         <div class="hidden md:flex items-center space-x-6">
             <?php
+
+use App\Core\Functions;
+
             if (isset($_SESSION['current_user'])) {
                 $user = $_SESSION['current_user'];
+                //Functions::dd($user);
                 $role = $user->get_role();
                 $fullName = htmlspecialchars(($user->get_first_name() ?? 'User') . ' ' . ($user->get_last_name() ?? ''));
                 $avatar = "https://ui-avatars.com/api/?name=" . urlencode($fullName) . "&background=0f172a&color=3b82f6&size=128";

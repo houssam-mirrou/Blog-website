@@ -23,7 +23,7 @@ class RegisterController extends Controller {
         $reconfirm_password = $_POST['reconfirm_password'];
         $config = Config::get_config();
         $data = new DataBase($config['database']);
-        $reader = new Reader($first_name,$last_name,$email,$phone_number);
+        $reader = new Reader($first_name,$last_name,$email,$phone_number,'');
         $errors = AuthController::sign_up($data,$email,$password,$first_name,$last_name,$phone_number,$reconfirm_password);
         if($errors === true){
             header('Location: /login');
