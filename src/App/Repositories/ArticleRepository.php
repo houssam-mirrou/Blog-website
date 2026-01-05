@@ -49,4 +49,12 @@ class ArticleRepository {
         ];
         return $this->data->query($query,$params);
     }
+    public function get_article_by_id($id){
+        $query = 'SELECT * from articles where id=:id';
+        $params = [
+            ':id'=>$id
+        ];
+        $result = $this->data->query($query,$params);
+        return $result[0];
+    }
 }

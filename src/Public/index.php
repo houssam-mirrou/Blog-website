@@ -59,6 +59,10 @@ $router->post('/delete-article','DashboardAuthorController@delete_article');
 $router->get('/create-article','CreateArticleController@index');
 $router->post('/store-article','CreateArticleController@post_article');
 
+//Author update article
+$router->get('/edit-article','EditArticleController@index');
+$router->post('/update-article','EditArticleController@update_article');
+
 //Admin Dashboard
 $router->get('/dashboard-admin','DashboardAdminController@index');
 $router->post('/dashboard-admin','DashboardAdminController@add_category');
