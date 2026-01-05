@@ -12,6 +12,7 @@ create table users (
 create table category (
     id int primary key AUTO_INCREMENT,
     name varchar(50) not null,
+    slug VARCHAR(255) NOT NULL UNIQUE,
     admin_id int not null,
     FOREIGN KEY (admin_id) REFERENCES users(id)
 );
