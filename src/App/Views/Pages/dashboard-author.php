@@ -1,38 +1,12 @@
 <?php
 // MOCK DATA: In your real app, fetch this from the database using $user->get_id()
 $stats = [
-    'total_articles' => 12,
+    'total_articles' => $number_of_articles,
     'total_views' => '45.2k',
     'total_likes' => 1240,
     'followers' => 850
 ];
 
-$articles = [
-    [
-        'id' => 1,
-        'title' => 'The Evolution of Modern Web Architecture',
-        'status' => 'Published',
-        'views' => 1205,
-        'date' => 'Dec 28, 2025',
-        'image' => 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=150&q=80'
-    ],
-    [
-        'id' => 2,
-        'title' => 'Understanding PHP 8.2 Readonly Classes',
-        'status' => 'Published',
-        'views' => 890,
-        'date' => 'Dec 20, 2025',
-        'image' => 'https://images.unsplash.com/photo-1599507593499-a3f7d7d97663?auto=format&fit=crop&w=150&q=80'
-    ],
-    [
-        'id' => 3,
-        'title' => '10 Tips for Better CSS Architecture',
-        'status' => 'Draft',
-        'views' => 0,
-        'date' => 'Last edited 2 hours ago',
-        'image' => 'https://images.unsplash.com/photo-1507721999472-8ed4421c4af3?auto=format&fit=crop&w=150&q=80'
-    ]
-];
 ?>
 
 <main class="bg-slate-900 min-h-screen pb-20">
@@ -121,37 +95,42 @@ $articles = [
                     <div class="p-5 flex flex-col md:flex-row items-center gap-5 hover:bg-slate-750 transition duration-150 group">
 
                         <div class="w-full md:w-24 h-16 bg-slate-700 rounded-lg overflow-hidden shrink-0">
-                            <img src="<?= $article['image'] ?>" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition">
+                            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=150&q=80" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition">
                         </div>
 
                         <div class="flex-grow text-center md:text-left">
                             <h3 class="text-white font-bold text-lg mb-1 group-hover:text-blue-400 transition">
-                                <a href="#"><?= $article['title'] ?></a>
+                                <a href="#"><?= $article->get_title() ?></a>
                             </h3>
                             <div class="flex flex-wrap justify-center md:justify-start items-center gap-3 text-xs text-slate-400">
-                                <span><?= $article['date'] ?></span>
-                                <?php if ($article['status'] === 'Published'): ?>
+                                <span><?= $article->get_created_date() ?></span>
+                                <!-- <?php //if ($article['status'] === 'Published'): 
+                                        ?>
                                     <span class="px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 border border-green-500/20">Published</span>
-                                <?php else: ?>
+                                <?php //else: 
+                                ?>
                                     <span class="px-2 py-0.5 rounded-full bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">Draft</span>
-                                <?php endif; ?>
+                                <?php //endif; 
+                                ?> -->
+                                <span class="px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 border border-green-500/20">Published</span>
+
                                 <span class="flex items-center gap-1">
                                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                     </svg>
-                                    <?= $article['views'] ?>
+                                    <?= 0 ?>
                                 </span>
                             </div>
                         </div>
 
                         <div class="flex items-center gap-3 opacity-100 md:opacity-0 group-hover:opacity-100 transition duration-200">
-                            <a href="edit-article?id=<?= $article['id'] ?>" class="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition" title="Edit">
+                            <a href="edit-article?id=<?= $article->get_id() ?>" class="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition" title="Edit">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                 </svg>
                             </a>
-                            <button onclick="openDeleteModal(<?= $article['id'] ?>, '<?= htmlspecialchars($article['title']) ?>')" class="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition" title="Delete">
+                            <button onclick="openDeleteModal(<?= $article->get_id() ?>, '<?= htmlspecialchars($article->get_title()) ?>')" class="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition" title="Delete">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                 </svg>
@@ -198,7 +177,7 @@ $articles = [
                 </button>
 
                 <form action="delete-article" method="POST">
-                    <input type="hidden" name="article_id" id="deleteId">
+                    <input type="hidden" name="delete_article_id" id="deleteId">
                     <button type="submit" class="px-5 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-lg font-bold transition shadow-lg shadow-red-600/20">
                         Yes, Delete
                     </button>
