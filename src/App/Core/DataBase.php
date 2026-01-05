@@ -35,4 +35,10 @@ class DataBase
         }
         return true;
     }
+    
+    public function get_last_inserted_id_query(){
+        $query = 'SELECT LAST_INSERT_ID() as id;';
+        $result = $this->query($query);
+        return $result[0]['id'];
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Core\Category;
+use App\Models\Category;
 use App\Repositories\CategoryRepository;
 
 class CategoryServices {
@@ -49,5 +49,8 @@ class CategoryServices {
 
     public function delete_category($id){
         return $this->category_repositry->delete_category($id);
+    }
+    public function get_all_category(){
+        return $this->category_repositry->get_all_categories();
     }
 }

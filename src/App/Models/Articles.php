@@ -6,7 +6,7 @@ class Articles {
     private $title;
     private $body;
     private $created_date;
-    public function __construct($title,$body,$created_date)
+    public function __construct($title,$body,$created_date='')
     {   
         $this->title=$title;
         $this->body=$body;

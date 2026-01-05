@@ -56,10 +56,13 @@ $router->get('/dashboard-author','DashboardAuthorController@index');
 
 //Author create article
 $router->get('/create-article','CreateArticleController@index');
+$router->post('/store-article','CreateArticleController@post_article');
 
 //Admin Dashboard
 $router->get('/dashboard-admin','DashboardAdminController@index');
 $router->post('/dashboard-admin','DashboardAdminController@add_category');
 $router->post('/dashboard-admin/edit-category','DashboardAdminController@update_category');
 $router->post('/delete-category','DashboardAdminController@delete_category');
+
+
 $router->dispatch();

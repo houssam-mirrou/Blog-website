@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Core\Category;
+use App\Models\Category;
 use App\Core\DataBase;
 use App\Core\Config;
 
@@ -79,5 +79,11 @@ class CategoryRepository
             'id' => $id
         ];
         return $this->data->query($query,$params);
+    }
+
+    public function get_all_categories(){
+        $query = 'SELECT * from category;';
+        $result = $this->data->query($query);
+        return $result;
     }
 }
