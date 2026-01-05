@@ -30,5 +30,13 @@ class DashboardAuthorController extends Controller {
         ]);
     }
 
+    public function delete_article(){
+        $article_services = new ArticleServices();
+        $article_id = $_POST['delete_article_id'];
+        $article_services->delete_article_by_id($article_id);
+        header('Location: /dashboard-author');
+        exit();
+    }
+
 
 }

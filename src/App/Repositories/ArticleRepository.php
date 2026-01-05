@@ -42,4 +42,11 @@ class ArticleRepository {
         $result = $this->data->query($query,$params);
         return $result[0]['count'];
     }
+    public function delete_article_by_id($id){
+        $query = 'DELETE from articles where id=:id';
+        $params = [
+            ':id'=>$id
+        ];
+        return $this->data->query($query,$params);
+    }
 }

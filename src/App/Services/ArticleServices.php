@@ -44,4 +44,7 @@ class ArticleServices
     public function get_all_articles(){
         return $this->article_repository->get_all_articles();
     }
+    public function delete_article_by_id($id){
+        return $this->article_repository->delete_article_by_id($id);
+    }
 }

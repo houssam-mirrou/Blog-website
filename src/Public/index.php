@@ -53,6 +53,7 @@ $router->post('/upgrade-role','UpgradeRoleController@upgrade');
 
 //Author Dashboard
 $router->get('/dashboard-author','DashboardAuthorController@index');
+$router->post('/delete-article','DashboardAuthorController@delete_article');
 
 //Author create article
 $router->get('/create-article','CreateArticleController@index');

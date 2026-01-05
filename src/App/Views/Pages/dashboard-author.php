@@ -177,7 +177,7 @@ $stats = [
                 </button>
 
                 <form action="delete-article" method="POST">
-                    <input type="hidden" name="article_id" id="deleteId">
+                    <input type="hidden" name="delete_article_id" id="deleteId">
                     <button type="submit" class="px-5 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-lg font-bold transition shadow-lg shadow-red-600/20">
                         Yes, Delete
                     </button>
