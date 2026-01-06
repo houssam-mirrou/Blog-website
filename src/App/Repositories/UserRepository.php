@@ -30,4 +30,13 @@ class UserRepository {
         $result = $this->data->query($query);
         return $result[0]['number_of_users'];
     }
+
+    public function get_user_by_id($id){
+        $query = 'SELECT * from users where id=:id';
+        $params = [
+            ':id'=>$id
+        ];
+        $result = $this->data->query($query,$params);
+        return $result[0];
+    }
 }

@@ -26,7 +26,7 @@ class ArticleCategoryRepository
         $result = $this->data->query($query,$params);
         return $result;
     }
-    public function get_article_categories($id){
+    public function get_article_categories_id($id){
         $query = 'SELECT category_id from articles_categories where article_id=:id';
         $params = [
             ':id'=>$id
@@ -34,4 +34,5 @@ class ArticleCategoryRepository
         $result = $this->data->query($query,$params);
         return $result;
     }
+    
 }

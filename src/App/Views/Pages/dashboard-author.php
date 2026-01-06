@@ -100,7 +100,7 @@ $stats = [
 
                         <div class="flex-grow text-center md:text-left">
                             <h3 class="text-white font-bold text-lg mb-1 group-hover:text-blue-400 transition">
-                                <a href="#"><?= $article->get_title() ?></a>
+                                <a href="/article?id=<?= $article->get_id() ?>"><?= $article->get_title() ?></a>
                             </h3>
                             <div class="flex flex-wrap justify-center md:justify-start items-center gap-3 text-xs text-slate-400">
                                 <span><?= $article->get_created_date() ?></span>

@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Controllers;
-
 use App\Core\Controller;
 use App\Core\DataBase;
 use App\Core\Config;

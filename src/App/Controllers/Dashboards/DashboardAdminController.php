@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Dashboards;
 
-use App\Core\Category;
+use App\Models\Category;
 use App\Core\Controller;
 use App\Core\Functions;
 use App\Repositories\CategoryRepository;
