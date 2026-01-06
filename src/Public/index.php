@@ -1,7 +1,6 @@
 <?php
 
 require_once __DIR__ . '/../Bootstrap/autoload.php';
-$config = require __DIR__ . '/../App/Core/Config.php';
 
 use App\Controllers\LogInController;
 use App\Core\Functions;
@@ -41,6 +40,7 @@ $router->get('/contact', 'ContactController@index');
 
 //article
 $router->get('/article', 'ArticleController@index');
+$router->post('/comment-article','ArticleController@comment_on_article');
 
 //profile
 $router->get('/profile','ProfileController@index');

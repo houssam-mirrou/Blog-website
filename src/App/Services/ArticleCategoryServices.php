@@ -14,7 +14,7 @@ class ArticleCategoryServices {
     public function add_article_category($article_id, $cat_id){
         return $this->article_category_repository->add_cat_art($article_id, $cat_id);
     }
-    public function get_article_categories($id){
-        return $this->article_category_repository->get_article_categories($id);
+    public function get_article_categories_id($id){
+        return $this->article_category_repository->get_article_categories_id($id);
     }
 }

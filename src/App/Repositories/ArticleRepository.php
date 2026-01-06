@@ -57,4 +57,12 @@ class ArticleRepository {
         $result = $this->data->query($query,$params);
         return $result[0];
     }
+    public function get_user_by_id($id){
+        $query = 'SELECT * from articles where id=:id ';
+        $params = [
+            ':id' => $id
+        ];
+        $result = $this->data->query($query,$params);
+        return $result[0]['author_id'];
+    }
 }

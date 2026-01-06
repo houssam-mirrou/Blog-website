@@ -53,4 +53,7 @@ class CategoryServices {
     public function get_all_category(){
         return $this->category_repositry->get_all_categories();
     }
+    public function get_article_category_name($id){
+        return $this->category_repositry->get_article_category_name($id);
+    }
 }

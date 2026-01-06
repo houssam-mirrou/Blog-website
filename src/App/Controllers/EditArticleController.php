@@ -29,7 +29,7 @@ class EditArticleController extends Controller
             array_push($categories, $category);
         }
 
-        $current_category_ids = $article_service->get_article_categories($id);
+        $current_category_ids = $article_service->get_article_categories_id($id);
         $selected_ids = array_column($current_category_ids, 'category_id');
 
         $this->view('edit-article', [

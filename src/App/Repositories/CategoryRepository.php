@@ -86,4 +86,12 @@ class CategoryRepository
         $result = $this->data->query($query);
         return $result;
     }
+    public function get_article_category_name($id) {
+        $query = 'SELECT name from category where id=:id';
+        $params = [
+            ':id'=>$id
+        ];
+        $result = $this->data->query($query,$params);
+        return $result[0];
+    }
 }
