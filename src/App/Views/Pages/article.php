@@ -73,14 +73,40 @@
 
                 <div class="flex items-center justify-between pt-8 mt-12 border-t border-slate-700">
                     <div class="flex items-center gap-6">
-                        <button onclick="toggleLike(this)" class="group flex items-center gap-2 text-slate-400 hover:text-red-500 transition-colors">
-                            <div class="p-2 rounded-full group-hover:bg-red-500/10 transition">
-                                <svg class="w-6 h-6 transform group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                                </svg>
-                            </div>
-                            <span class="font-bold text-lg">1,240</span>
-                        </button>
+                        <form action="<?= isset($_SESSION['current_user']) ? 'like-article' : '' ?>" method="post">
+                            <input name="like-article-id" type="text" hidden value="<?= $article->get_id() ?>">
+                            <input name="like-user-id" type="text" hidden value="<?= $current_user_id ?>">
+                            <button onclick="toggleLike(this)" <?= isset($_SESSION['current_user']) ? '' : 'disabled'?> class="
+                            <?php
+                            if (isset($_SESSION['current_user'])) {
+                                if ($if_user_like === 1) {
+                                    echo 'text-red-500 ';
+                                } else {
+                                    echo 'text-slate-500';
+                                }
+                            } else {
+                                echo 'text-slate-500';
+                            }
+                            ?>group flex items-center gap-2 text-slate-400 hover:text-red-500 transition-colors">
+                                <div class="p-2 rounded-full group-hover:bg-red-500/10 transition">
+                                    <svg class="w-6 h-6 transform group-hover:scale-110 transition-transform"
+                                        <?php
+                                        if (isset($_SESSION['current_user'])) {
+                                            if ($if_user_like === 1) {
+                                                echo 'fill="currentColor" ';
+                                            } else {
+                                                echo 'fill="none"';
+                                            }
+                                        } else {
+                                            echo 'text-slate-500';
+                                        }
+                                        ?> stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </div>
+                                <span class="font-bold text-lg"><?= $article_likes ?></span>
+                            </button>
+                        </form>
 
                         <button class="flex items-center gap-2 text-slate-400 hover:text-blue-400 transition-colors">
                             <div class="p-2 rounded-full hover:bg-blue-500/10 transition">
@@ -88,7 +114,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                                 </svg>
                             </div>
-                            <span class="font-bold text-lg">48</span>
+                            <span class="font-bold text-lg"><?= $article_comment_count ?></span>
                         </button>
                     </div>
 
@@ -111,7 +137,7 @@
                     <img src="https://ui-avatars.com/api/?name=Guest+User&background=1e293b&color=94a3b8" class="w-12 h-12 rounded-full border border-slate-600">
                     <div class="flex-1">
                         <input name="comment-article-id" type="text" class="hidden" value="<?= $article->get_id() ?>">
-                        <textarea name="comment-body" placeholder="Write a comment..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-slate-200 placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all h-28 resize-none shadow-inner font-sans"></textarea>
+                        <textarea <?= isset($_SESSION['current_user']) ? '' : 'disabled'?> name="comment-body" placeholder="<?= isset($_SESSION['current_user']) ? 'Write a comment...' : 'You should log in to comment'?>" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-slate-200 placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all h-28 resize-none shadow-inner font-sans"></textarea>
                         <div class="flex justify-end mt-3">
                             <button class="bg-blue-600 text-white px-6 py-2.5 rounded-lg hover:bg-blue-500 transition-colors font-bold shadow-lg shadow-blue-500/20">Post Comment</button>
                         </div>
@@ -122,44 +148,61 @@
 
             <div class="space-y-6">
 
-                <?php
-                foreach ($comments as $key => $value) {
-                    foreach ($value as $k => $val) {
-                ?>
-                        <div class="flex gap-4 p-5 rounded-xl border border-transparent hover:bg-slate-700/50 hover:border-slate-700 transition duration-200 group">
-                            <img src="https://ui-avatars.com/api/?name=<?= $k ?>&background=0f172a&color=3b82f6" class="w-10 h-10 rounded-full flex-shrink-0 border border-slate-600">
-                            <div class="flex-1">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <h4 class="font-bold text-white text-sm"><?= $k ?></h4>
-                                        <span class="text-xs text-slate-500"><?= $val->get_comment_created_date() ?></span>
-                                    </div>
+                <?php foreach ($comments as $comment): ?>
+                    <div class="flex gap-4 p-5 rounded-xl border border-transparent hover:bg-slate-700/50 hover:border-slate-700 transition duration-200 group">
 
-                                    <button onclick="openReportModal('Comment', 'Comment by Alex Johnson')" class="text-slate-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all text-xs flex items-center gap-1 font-medium">
-                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd" />
-                                        </svg>
-                                        Report
-                                    </button>
+                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($comment['author_name']) ?>&background=0f172a&color=3b82f6"
+                            class="w-10 h-10 rounded-full flex-shrink-0 border border-slate-600">
+
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">
+                                        <?= htmlspecialchars($comment['author_name']) ?>
+                                    </h4>
+                                    <span class="text-xs text-slate-500">
+                                        <?= date('M j, Y H:i', strtotime($comment['created_date'])) ?>
+                                    </span>
                                 </div>
 
-                                <p class="text-slate-300 mt-2 text-sm leading-relaxed"><?= $val->get_comment_body() ?></p>
+                                <button onclick="openReportModal('Comment', 'Comment by <?= htmlspecialchars($comment['author_name']) ?>')"
+                                    class="text-slate-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all text-xs flex items-center gap-1 font-medium">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd" />
+                                    </svg>
+                                    Report
+                                </button>
+                            </div>
 
-                                <div class="flex items-center gap-5 mt-3">
-                                    <button onclick="toggleLike(this)" class="text-slate-500 hover:text-red-500 text-xs flex items-center gap-1.5 transition-colors font-medium">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <p class="text-slate-300 mt-2 text-sm leading-relaxed">
+                                <?= htmlspecialchars($comment['body']) ?>
+                            </p>
+
+                            <div class="flex items-center gap-5 mt-3">
+
+                                <form action="<?= isset($_SESSION['current_user']) ? 'like-comment' : '' ?>" method="POST" class="inline-block">
+                                    <input type="hidden" name="like_comment_id" value="<?= $comment['id'] ?>">
+                                    <input type="hidden" name="like_article_comment_id" value="<?= $article->get_id() ?>">
+
+                                    <button type="submit"
+                                        class="text-xs flex items-center gap-1.5 transition-colors font-medium 
+                                   <?= isset($_SESSION['current_user']) && $comment['is_liked_by_me'] ? 'text-red-500 hover:text-red-400' : 'text-slate-500 hover:text-red-500' ?>" <?= isset($_SESSION['current_user']) ? '' : 'disabled'?>>
+
+                                        <svg class="w-4 h-4"
+                                            fill="<?= isset($_SESSION['current_user']) && $comment['is_liked_by_me'] ? 'currentColor' : 'none' ?>"
+                                            stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                         </svg>
-                                        12
+
+                                        <?= $comment['like_count'] ?>
                                     </button>
-                                    <button class="text-slate-500 hover:text-blue-400 text-xs font-medium">Reply</button>
-                                </div>
+                                </form>
+
+                                <button class="text-slate-500 hover:text-blue-400 text-xs font-medium">Reply</button>
                             </div>
                         </div>
-                <?php
-                    }
-                }
-                ?>
+                    </div>
+                <?php endforeach; ?>
 
             </div>
         </section>
@@ -224,6 +267,8 @@
 
         // Check if active (red)
         if (btn.classList.contains('text-red-500')) {
+            // text-slate-500 fill="none" liked
+            // text-red-500 fill="currentColor" unliked
             // Un-like
             btn.classList.remove('text-red-500');
             btn.classList.add('text-slate-500'); // Return to gray
