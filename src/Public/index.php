@@ -43,6 +43,7 @@ $router->get('/article', 'ArticleController@index');
 $router->post('/comment-article','ArticleController@comment_on_article');
 $router->post('/like-article','ArticleController@like_article');
 $router->post('/like-comment','ArticleController@like_comment');
+$router->post('/report','ArticleController@report');
 
 //profile
 $router->get('/profile','ProfileController@index');
@@ -70,6 +71,7 @@ $router->get('/dashboard-admin','DashboardAdminController@index');
 $router->post('/dashboard-admin','DashboardAdminController@add_category');
 $router->post('/dashboard-admin/edit-category','DashboardAdminController@update_category');
 $router->post('/delete-category','DashboardAdminController@delete_category');
+
 
 
 $router->dispatch();
