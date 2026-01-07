@@ -9,10 +9,13 @@ use App\Services\ArticleServices;
 use App\Core\Parsedown;
 use App\Models\Author;
 use App\Models\Comments;
+use App\Repositories\ReportArticleRepository;
 use App\Repositories\UserRepository;
 use App\Services\ArticleLikesServices;
 use App\Services\CommentsLikeServices;
 use App\Services\CommentsServices;
+use App\Services\ReportArticleServices;
+use App\Services\ReportCommentServices;
 
 class ArticleController extends Controller
 {
@@ -86,7 +89,7 @@ class ArticleController extends Controller
             $art_user = new Author($article_user['first_name'], $article_user['last_name'], $article_user['email'], $article_user['phone_number'], $article_user['created_date']);
 
             $article_likes_count = $article_like_service->get_article_likes($id);
-            
+
             $db_comments = $comments_service->get_comments_on_article($id);
             $comments_data = [];
 
@@ -160,6 +163,31 @@ class ArticleController extends Controller
         $result = $comments_like_service->update_comment_likes($like_comment_id, $user_id);
         if ($result === true) {
             header('Location: /article?id=' . $like_article_comment_id);
+            exit();
+        }
+    }
+
+    public function report()
+    {
+        $report_comment_service = new ReportCommentServices();
+        $report_article_service = new ReportArticleServices();
+        $user_repository = new UserRepository();
+
+        $reason = $_POST['reason'];
+        $body = $_POST['report-body'];
+        $report_type = $_POST['report-type'];
+        $report_target_id = $_POST['report-target-id'];
+        $report_article_id = $_POST['report-article-id'];
+        $user_email = $_SESSION['current_user']->get_email();
+        $user_id = $user_repository->get_user_id($user_email);
+
+        if ($report_type === 'Comment') {
+            $report_comment_service->insert_comment_report($user_id,$report_target_id,$reason,$body);
+            header('Location: /article?id=' .$report_article_id);
+            exit();
+        } else {
+            $report_article_service->insert_article_report($user_id,$report_target_id,$reason,$body);
+            header('Location: /article?id=' .$report_article_id);
             exit();
         }
     }

@@ -55,7 +55,7 @@
                         </div>
                     </div>
 
-                    <button onclick="openReportModal('Article', '<?= $article->get_title() ?>')" class="text-slate-500 hover:text-red-400 transition-colors flex items-center gap-2 text-sm font-medium group">
+                    <button onclick="openReportModal('Article', '<?= htmlspecialchars($article->get_title()) ?>', <?= $article->get_id() ?>, <?= $article->get_id() ?>)" class="text-slate-500 hover:text-red-400 transition-colors flex items-center gap-2 text-sm font-medium group">
                         <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13a1 1 0 011-1h1.5a1 1 0 011 1v4a1 1 0 01-1 1H13a1 1 0 01-1-1V8z"></path>
                         </svg>
@@ -76,7 +76,7 @@
                         <form action="<?= isset($_SESSION['current_user']) ? 'like-article' : '' ?>" method="post">
                             <input name="like-article-id" type="text" hidden value="<?= $article->get_id() ?>">
                             <input name="like-user-id" type="text" hidden value="<?= $current_user_id ?>">
-                            <button onclick="toggleLike(this)" <?= isset($_SESSION['current_user']) ? '' : 'disabled'?> class="
+                            <button onclick="toggleLike(this)" <?= isset($_SESSION['current_user']) ? '' : 'disabled' ?> class="
                             <?php
                             if (isset($_SESSION['current_user'])) {
                                 if ($if_user_like === 1) {
@@ -129,7 +129,7 @@
 
         <section class="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 p-8">
             <h3 class="text-2xl font-bold text-white mb-8 flex items-center">
-                Discussion <span class="ml-3 text-sm bg-slate-700 text-slate-300 px-3 py-1 rounded-full">48</span>
+                Discussion <span class="ml-3 text-sm bg-slate-700 text-slate-300 px-3 py-1 rounded-full"><?= $article_comment_count ?></span>
             </h3>
 
             <form action="comment-article" method="post">
@@ -137,7 +137,7 @@
                     <img src="https://ui-avatars.com/api/?name=Guest+User&background=1e293b&color=94a3b8" class="w-12 h-12 rounded-full border border-slate-600">
                     <div class="flex-1">
                         <input name="comment-article-id" type="text" class="hidden" value="<?= $article->get_id() ?>">
-                        <textarea <?= isset($_SESSION['current_user']) ? '' : 'disabled'?> name="comment-body" placeholder="<?= isset($_SESSION['current_user']) ? 'Write a comment...' : 'You should log in to comment'?>" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-slate-200 placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all h-28 resize-none shadow-inner font-sans"></textarea>
+                        <textarea <?= isset($_SESSION['current_user']) ? '' : 'disabled' ?> name="comment-body" placeholder="<?= isset($_SESSION['current_user']) ? 'Write a comment...' : 'You should log in to comment' ?>" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-slate-200 placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all h-28 resize-none shadow-inner font-sans"></textarea>
                         <div class="flex justify-end mt-3">
                             <button class="bg-blue-600 text-white px-6 py-2.5 rounded-lg hover:bg-blue-500 transition-colors font-bold shadow-lg shadow-blue-500/20">Post Comment</button>
                         </div>
@@ -165,7 +165,7 @@
                                     </span>
                                 </div>
 
-                                <button onclick="openReportModal('Comment', 'Comment by <?= htmlspecialchars($comment['author_name']) ?>')"
+                                <button onclick="openReportModal('Comment', 'Comment by <?= htmlspecialchars($comment['author_name']) ?>', <?= $comment['id'] ?>,<?= $article->get_id() ?>)"
                                     class="text-slate-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all text-xs flex items-center gap-1 font-medium">
                                     <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd" />
@@ -186,7 +186,7 @@
 
                                     <button type="submit"
                                         class="text-xs flex items-center gap-1.5 transition-colors font-medium 
-                                   <?= isset($_SESSION['current_user']) && $comment['is_liked_by_me'] ? 'text-red-500 hover:text-red-400' : 'text-slate-500 hover:text-red-500' ?>" <?= isset($_SESSION['current_user']) ? '' : 'disabled'?>>
+                                   <?= isset($_SESSION['current_user']) && $comment['is_liked_by_me'] ? 'text-red-500 hover:text-red-400' : 'text-slate-500 hover:text-red-500' ?>" <?= isset($_SESSION['current_user']) ? '' : 'disabled' ?>>
 
                                         <svg class="w-4 h-4"
                                             fill="<?= isset($_SESSION['current_user']) && $comment['is_liked_by_me'] ? 'currentColor' : 'none' ?>"
@@ -230,10 +230,10 @@
         <div class="p-6">
             <p class="text-sm text-slate-400 mb-6">You are reporting: <span id="reportTarget" class="font-bold text-white block mt-1 truncate">Target</span></p>
 
-            <form onsubmit="event.preventDefault(); submitReport();">
+            <form method="post" action="/report">
                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Reason for reporting</label>
                 <div class="relative mb-4">
-                    <select class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg p-3 appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none cursor-pointer">
+                    <select name="reason" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg p-3 appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none cursor-pointer">
                         <option>Spam or misleading</option>
                         <option>Harassment or hate speech</option>
                         <option>Inappropriate content</option>
@@ -247,9 +247,12 @@
                 </div>
 
                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Additional Details (Optional)</label>
-                <textarea class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg p-3 h-24 mb-6 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none resize-none placeholder-slate-600" placeholder="Please provide more context..."></textarea>
+                <textarea name="report-body" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg p-3 h-24 mb-6 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none resize-none placeholder-slate-600" placeholder="Please provide more context..."></textarea>
 
                 <div class="flex justify-end gap-3">
+                    <input type="hidden" name="report-type" id="reportType">
+                    <input type="hidden" name="report-target-id" id="reportTargetId">
+                    <input type="hidden" name="report-article-id" id="reportArticletId">
                     <button type="button" onclick="closeReportModal()" class="px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-lg transition-colors text-sm font-medium">Cancel</button>
                     <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition-colors text-sm font-bold shadow-lg shadow-red-600/20">Submit Report</button>
                 </div>
@@ -283,11 +286,22 @@
     }
 
     // 2. REPORT MODAL LOGIC
+    const reportTypeInput = document.getElementById('reportType');
+    const reportTargetIdInput = document.getElementById('reportTargetId'); // Was 'report_id'
+    const reportTitleSpan = document.getElementById('reportTarget');
+    const reportArticletId = document.getElementById('reportArticletId');
     const modal = document.getElementById('reportModal');
-    const reportTargetSpan = document.getElementById('reportTarget');
 
-    function openReportModal(type, title, id) {
-        reportTargetSpan.innerText = `"${title}" (${type})`;
+    // 2. The Clean Function
+    function openReportModal(type, title, target_id, article_id) {
+        // Update the UI text
+        reportTitleSpan.innerText = `"${title}" (${type})`;
+        reportArticletId.value = article_id;
+        // Fill the hidden inputs so PHP knows what to report
+        reportTypeInput.value = type; // e.g. 'Article' or 'Comment'
+        reportTargetIdInput.value = target_id; // e.g. 52
+
+        // Show modal
         modal.classList.remove('hidden');
     }
 
