@@ -5,17 +5,6 @@ if (!isset($_SESSION['current_user']) || $_SESSION['current_user']->get_role() !
     exit();
 }
 
-// MOCK DATA (Replace with DB calls)
-$stats = [
-    'users' => 1250,
-    'articles' => 340
-];
-
-$articles = [
-    ['id' => 101, 'title' => 'Spam Article Title', 'author' => 'BadUser123', 'date' => 'Dec 30', 'reports' => 5],
-    ['id' => 102, 'title' => 'Understanding PHP 8.2', 'author' => 'Houssam', 'date' => 'Dec 28', 'reports' => 0],
-    ['id' => 103, 'title' => 'How to center a div', 'author' => 'Sarah', 'date' => 'Dec 25', 'reports' => 0],
-];
 ?>
 
 <main class="bg-slate-900 min-h-screen pb-20">
@@ -46,7 +35,7 @@ $articles = [
             </div>
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700">
                 <p class="text-slate-400 text-sm font-medium uppercase tracking-wide">Total Articles</p>
-                <p class="text-3xl font-bold text-white mt-2"><?= $stats['articles'] ?></p>
+                <p class="text-3xl font-bold text-white mt-2"><?= $article_counts ?></p>
             </div>
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700">
                 <p class="text-slate-400 text-sm font-medium uppercase tracking-wide">Categories</p>
@@ -114,19 +103,21 @@ $articles = [
                             <?php foreach ($articles as $art): ?>
                                 <tr class="group hover:bg-slate-750 transition">
                                     <td class="px-6 py-4">
-                                        <p class="text-white font-medium truncate max-w-[200px]"><?= $art['title'] ?></p>
-                                        <p class="text-xs text-slate-500"><?= $art['date'] ?></p>
+                                        <h3 class="text-white font-medium truncate max-w-[200px] mb-1 group-hover:text-blue-400 transition">
+                                            <a href="/article?id=<?= $art['article']->get_id() ?>"><?= $art['article']->get_title() ?></a>
+                                        </h3>
+                                        <p class="text-xs text-slate-500"><?= $art['article']->get_created_date() ?></p>
                                     </td>
                                     <td class="px-6 py-4 text-slate-300 text-sm">
-                                        <?= $art['author'] ?>
-                                        <?php if ($art['reports'] > 0): ?>
+                                        <?= $art['art_author']->get_first_name() . ' ' . $art['art_author']->get_last_name() ?>
+                                        <?php if ($art['reports_count'] > 0): ?>
                                             <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20">
-                                                <?= $art['reports'] ?> Reports
+                                                <?= $art['reports_count'] ?> Reports
                                             </span>
                                         <?php endif; ?>
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        <button onclick="openDeleteModal('article', <?= $art['id'] ?>)" class="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition" title="Remove Article">
+                                        <button onclick="openDeleteModal('article', <?= $art['article']->get_id() ?>)" class="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition" title="Remove Article">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                             </svg>
@@ -134,6 +125,77 @@ $articles = [
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="space-y-4 col-span-1 xl:col-span-2">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-white text-red-400 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                        Reported Comments
+                    </h2>
+                    <span class="text-sm text-slate-500">Requires Attention</span>
+                </div>
+
+                <div class="bg-slate-800 rounded-xl border border-red-500/20 overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-700 bg-slate-900/50 text-xs uppercase text-slate-400">
+                                <th class="px-6 py-4 font-bold">Comment Snippet</th>
+                                <th class="px-6 py-4 font-bold">Reported By</th>
+                                <th class="px-6 py-4 font-bold">Reason</th>
+                                <th class="px-6 py-4 font-bold text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-700">
+                            <?php if (!empty($flagged_comments)): ?>
+                                <?php foreach ($flagged_comments as $flag_com): ?>
+                                    <tr class="group hover:bg-slate-750 transition">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-1 bg-red-500 h-8 rounded-full"></div>
+                                                <div>
+                                                    <p class="text-white text-sm font-medium italic">"<?= htmlspecialchars(substr($flag_com['comment']['body'], 0, 50)) ?>..."</p>
+                                                    <p class="text-xs text-slate-500 mt-1">
+                                                        Author: User #<?= $flag_com['comment']['id'] . ' '
+                                                                            . $flag_com['art_auth']->get_first_name() . ' '
+                                                                            . $flag_com['art_auth']->get_last_name() ?></p>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td class="px-6 py-4 text-slate-300 text-sm">
+                                            User #<?= $flag_com['comment']['user_id'] ?>
+                                            <br>
+                                            <span class="text-xs text-slate-500"><?= $flag_com['comment']['created_date'] ?></span>
+                                        </td>
+
+                                        <td class="px-6 py-4">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                <?= htmlspecialchars($flag_com['reason']) ?>
+                                            </span>
+                                        </td>
+
+                                        <td class="px-6 py-4 text-right space-x-2">
+                                            <a href="/article?id=<?= $flag_com['comment']['article_id'] ?>#comment-<?= $flag_com['comment']['id'] ?>" target="_blank" class="text-blue-400 hover:text-blue-300 text-sm transition">View</a>
+                                            <span class="text-slate-600">|</span>
+                                            <button onclick="openDeleteModal('comment', <?= $flag_com['comment']['id'] ?>)" class="text-red-400 hover:text-red-300 font-bold text-sm transition">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="4" class="px-6 py-8 text-center text-slate-500">
+                                        No reported comments found. Good job!
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -180,8 +242,8 @@ $articles = [
         <p class="text-slate-400 text-sm mb-6">Are you sure you want to remove this item? This action cannot be undone.</p>
 
         <form action="/delete-category" method="POST" class="flex gap-3 justify-center">
-            <input type="hidden" name="type" id="deleteType">
-            <input type="hidden" name="id_delete_category" id="deleteId">
+            <input type="hidden" name="delete_type" id="deleteType">
+            <input type="hidden" name="delete_id" id="deleteId">
 
             <button type="button" onclick="closeDeleteModal()" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg font-medium transition">Cancel</button>
             <button type="submit" class="px-5 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-lg font-bold transition shadow-lg shadow-red-600/20">Yes, Delete</button>

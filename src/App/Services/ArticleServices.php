@@ -99,4 +99,7 @@ class ArticleServices
     public function get_user_by_id($id){
         return $this->article_repository->get_user_by_id($id);
     }
+    public function get_count_articles(){
+        return $this->article_repository->get_count_articles();
+    }
 }

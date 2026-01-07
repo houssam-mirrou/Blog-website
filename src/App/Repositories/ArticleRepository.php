@@ -65,4 +65,10 @@ class ArticleRepository {
         $result = $this->data->query($query,$params);
         return $result[0]['author_id'];
     }
+
+    public function get_count_articles(){
+        $query = 'SELECT count(*) as art_num from articles';
+        $result = $this->data->query($query);
+        return $result[0]['art_num'];
+    }
 }
