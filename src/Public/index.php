@@ -41,6 +41,8 @@ $router->get('/contact', 'ContactController@index');
 //article
 $router->get('/article', 'ArticleController@index');
 $router->post('/comment-article','ArticleController@comment_on_article');
+$router->post('/like-article','ArticleController@like_article');
+$router->post('/like-comment','ArticleController@like_comment');
 
 //profile
 $router->get('/profile','ProfileController@index');

@@ -45,7 +45,8 @@ class DashboardAdminController extends Controller
         $current_user = $_SESSION['current_user'];
         $errors = $cat_service->create_category($name, $user_repositry->get_user_id($current_user->get_email()));
         if ($errors === true) {
-            $this->index();
+            header('Location: /dashboard-admin');
+            exit();
         } else {
             $this->view('dashboard-admin', [
                 'title' => 'Dashboard',
@@ -62,7 +63,8 @@ class DashboardAdminController extends Controller
         $id = $_POST['catId'];
         $errors = $cat_service->modify_category($id, $name);
         if ($errors === true) {
-            $this->index();
+            header('Location: /dashboard-admin');
+            exit();
         } else {
             $this->view('dashboard-admin', [
                 'title' => 'Dashboard',
@@ -77,7 +79,8 @@ class DashboardAdminController extends Controller
         $id = $_POST['id_delete_category'];
         $errors = $cat_service->delete_category($id);
         if ($errors === true) {
-            $this->index();
+            header('Location: /dashboard-admin');
+            exit();
         }
         else {
             $this->view('dashboard-admin', [

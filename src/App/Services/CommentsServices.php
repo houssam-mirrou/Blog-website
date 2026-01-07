@@ -25,4 +25,8 @@ class CommentsServices {
         $result = $this->comments_repositry->insert_comment($comment,$user_id,$article_id);
         return $result;
     }
+
+    public function get_comments_count_on_article($article_id){
+        return $this->comments_repositry->get_comments_count_on_article($article_id);
+    }
 }

@@ -37,4 +37,14 @@ class CommentsRepository
         $result = $this->data->query($query,$params);
         return $result;
     }
+
+    public function get_comments_count_on_article($article_id)
+    {
+        $query = 'SELECT count(*) as comm_count from comments where article_id=:article_id';
+        $params = [
+            'article_id' => $article_id
+        ];
+        $result = $this->data->query($query, $params);
+        return $result[0]['comm_count'];
+    }
 }
