@@ -26,4 +26,31 @@ class ReportCommentRepository {
         return $result;
     }
 
+    public function get_number_of_reports($comment_id){
+        $query = 'SELECT count(*) as report_count from comment_report where comment_id=:comment_id';
+        $params = [
+            ':comment_id'=>$comment_id
+        ];
+        $result = $this->data->query($query,$params);
+        return $result[0]['report_count'];
+    }
+
+    public function get_user_id_on_comment($comment_id){
+        $query = 'SELECT user_id from comment_report where comment_id=:comment_id';
+        $params = [
+            ':comment_id'=>$comment_id
+        ];
+        $result = $this->data->query($query,$params);
+        return $result[0]['user_id'];
+    }
+
+    public function get_comment_report_reason($comment_id){
+        $query = 'SELECT reason from comment_report where comment_id=:comment_id';
+        $params = [
+            ':comment_id'=>$comment_id
+        ];
+        $result = $this->data->query($query,$params);
+        return $result[0]['reason'];
+    }
+
 }

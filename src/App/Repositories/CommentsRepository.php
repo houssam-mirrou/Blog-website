@@ -47,4 +47,18 @@ class CommentsRepository
         $result = $this->data->query($query, $params);
         return $result[0]['comm_count'];
     }
+    public function delete_comment_by_id($id){
+        $query = 'DELETE from comments where id=:id';
+        $params = [
+            ':id'=>$id
+        ];
+        $result = $this->data->query($query,$params);
+        return $result; 
+    }
+
+    public function get_all_comments(){
+        $query = 'SELECT * from comments;';
+        $result = $this->data->query($query);
+        return $result;
+    }
 }

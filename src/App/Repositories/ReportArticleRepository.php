@@ -28,4 +28,13 @@ class ReportArticleRepository
         return $result;
     }
 
+    public function get_number_of_report_on_article($article_id){
+        $query = 'SELECT count(*) as rep_num from article_report where article_id=:article_id';
+        $params = [
+            ':article_id'=>$article_id
+        ];
+        $result=$this->data->query($query,$params);
+        return $result[0]['rep_num'];
+    }
+
 }

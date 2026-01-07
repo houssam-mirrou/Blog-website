@@ -70,7 +70,7 @@ $router->post('/update-article','EditArticleController@update_article');
 $router->get('/dashboard-admin','DashboardAdminController@index');
 $router->post('/dashboard-admin','DashboardAdminController@add_category');
 $router->post('/dashboard-admin/edit-category','DashboardAdminController@update_category');
-$router->post('/delete-category','DashboardAdminController@delete_category');
+$router->post('/delete-category','DashboardAdminController@delete');
 
 
 
