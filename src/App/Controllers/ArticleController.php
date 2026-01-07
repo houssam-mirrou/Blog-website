@@ -33,19 +33,22 @@ class ArticleController extends Controller
             header('Location: /');
             exit();
         }
+
+        $db_article = $article_services->get_article_by_id($id);
+        $article = new Articles($db_article['title'], $db_article['body'], $db_article['created_date'], $db_article['id']);
+
+        $article_categories = $article_services->get_article_categories($db_article['author_id']);
+        $article_user = $user_repository->get_user_by_id($db_article['author_id']);
+        $art_user = new Author($article_user['first_name'], $article_user['last_name'], $article_user['email'], $article_user['phone_number'], $article_user['created_date']);
+
+        $article_likes_count = $article_like_service->get_article_likes($id);
+
         if (isset($_SESSION['current_user'])) {
 
             $current_user_email = $_SESSION['current_user']->get_email();
             $current_user_id = $user_repository->get_user_id($current_user_email);
 
-            $db_article = $article_services->get_article_by_id($id);
-            $article = new Articles($db_article['title'], $db_article['body'], $db_article['created_date'], $db_article['id']);
 
-            $article_categories = $article_services->get_article_categories($db_article['author_id']);
-            $article_user = $user_repository->get_user_by_id($db_article['author_id']);
-            $art_user = new Author($article_user['first_name'], $article_user['last_name'], $article_user['email'], $article_user['phone_number'], $article_user['created_date']);
-
-            $article_likes_count = $article_like_service->get_article_likes($id);
             $if_user_like_article = $article_like_service->if_user_like_article($current_user_id, $id);
 
             $db_comments = $comments_service->get_comments_on_article($id);
@@ -81,14 +84,6 @@ class ArticleController extends Controller
                 'article_comment_count' => $article_comment_count
             ]);
         } else {
-            $db_article = $article_services->get_article_by_id($id);
-            $article = new Articles($db_article['title'], $db_article['body'], $db_article['created_date'], $db_article['id']);
-
-            $article_categories = $article_services->get_article_categories($db_article['author_id']);
-            $article_user = $user_repository->get_user_by_id($db_article['author_id']);
-            $art_user = new Author($article_user['first_name'], $article_user['last_name'], $article_user['email'], $article_user['phone_number'], $article_user['created_date']);
-
-            $article_likes_count = $article_like_service->get_article_likes($id);
 
             $db_comments = $comments_service->get_comments_on_article($id);
             $comments_data = [];
@@ -182,12 +177,12 @@ class ArticleController extends Controller
         $user_id = $user_repository->get_user_id($user_email);
 
         if ($report_type === 'Comment') {
-            $report_comment_service->insert_comment_report($user_id,$report_target_id,$reason,$body);
-            header('Location: /article?id=' .$report_article_id);
+            $report_comment_service->insert_comment_report($user_id, $report_target_id, $reason, $body);
+            header('Location: /article?id=' . $report_article_id);
             exit();
         } else {
-            $report_article_service->insert_article_report($user_id,$report_target_id,$reason,$body);
-            header('Location: /article?id=' .$report_article_id);
+            $report_article_service->insert_article_report($user_id, $report_target_id, $reason, $body);
+            header('Location: /article?id=' . $report_article_id);
             exit();
         }
     }
