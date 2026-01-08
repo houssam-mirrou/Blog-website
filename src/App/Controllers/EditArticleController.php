@@ -15,7 +15,9 @@ class EditArticleController extends Controller
 
     public function index()
     {
-
+        if(!isset($_SESSION['current_user'])){
+            header('Location: /');
+        }
         $article_service = new ArticleServices();
         $id = $_GET['id'];
         $db_article = $article_service->get_article_by_id($id);

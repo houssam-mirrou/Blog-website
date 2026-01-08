@@ -10,6 +10,9 @@ use App\Models\Reader;
 
 class RegisterController extends Controller {
     public function index() {
+        if(isset($_SESSION['current_user'])){
+            header('Location: /');
+        }
         $this->view('register', [
             'title'=> 'Sign up'
         ]);

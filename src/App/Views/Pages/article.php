@@ -55,7 +55,7 @@
                         </div>
                     </div>
 
-                    <button onclick="openReportModal('Article', '<?= htmlspecialchars($article->get_title()) ?>', <?= $article->get_id() ?>, <?= $article->get_id() ?>)" class="text-slate-500 hover:text-red-400 transition-colors flex items-center gap-2 text-sm font-medium group">
+                    <button onclick="openReportModal('Article', '<?= htmlspecialchars($article->get_title()) ?>', <?= $article->get_id() ?>, <?= $article->get_id() ?>)" <?= isset($_SESSION['current_user']) ? '' : 'disabled' ?> class="text-slate-500 hover:text-red-400 transition-colors flex items-center gap-2 text-sm font-medium group">
                         <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13a1 1 0 011-1h1.5a1 1 0 011 1v4a1 1 0 01-1 1H13a1 1 0 01-1-1V8z"></path>
                         </svg>
@@ -166,7 +166,7 @@
                                 </div>
 
                                 <button onclick="openReportModal('Comment', 'Comment by <?= htmlspecialchars($comment['author_name']) ?>', <?= $comment['id'] ?>,<?= $article->get_id() ?>)"
-                                    class="text-slate-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all text-xs flex items-center gap-1 font-medium">
+                                    <?= isset($_SESSION['current_user']) ? '' : 'disabled' ?> class="text-slate-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all text-xs flex items-center gap-1 font-medium">
                                     <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd" />
                                     </svg>

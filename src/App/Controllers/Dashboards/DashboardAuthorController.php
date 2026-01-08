@@ -12,6 +12,9 @@ use App\Services\ArticleServices;
 class DashboardAuthorController extends Controller {
 
     public function index() {
+        if(!isset($_SESSION['current_user'])){
+            header('Location: /');
+        }
         $user_repositry = new UserRepository();
         $article_services = new ArticleServices();
         $author_id = $user_repositry->get_user_id($_SESSION['current_user']->get_email());

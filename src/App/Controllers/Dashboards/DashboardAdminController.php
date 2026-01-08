@@ -20,6 +20,9 @@ class DashboardAdminController extends Controller
 {
     public function index()
     {
+        if(!isset($_SESSION['current_user'])){
+            header('Location: /');
+        }
         $user_repositry = new UserRepository();
         $cat_repositry = new CategoryRepository();
         $art_services = new ArticleServices();

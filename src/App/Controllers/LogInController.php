@@ -21,10 +21,12 @@ class LogInController extends Controller
 
     public function sign_in()
     {
+        if(isset($_SESSION['current_user'])){
+            header('Location: /');
+        }
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $config = Config::get_config();
-        $data = new DataBase($config['database']);
+        $data = DataBase::get_data_instance();
         $temp_user['email'] = $email;
         $temp_user['password'] = $password;
         $errors = AuthController::sign_in($data, $email, $password);

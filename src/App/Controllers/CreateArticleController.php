@@ -11,6 +11,9 @@ use App\Services\CategoryServices;
 
 class CreateArticleController extends Controller {
     public function index() {
+        if(!isset($_SESSION['current_user'])){
+            header('Location: /');
+        }
         $cat_services = new CategoryServices();
         $db_categories = $cat_services->get_all_category();
         $categories = [];

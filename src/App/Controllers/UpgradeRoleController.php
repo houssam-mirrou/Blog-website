@@ -12,6 +12,9 @@ use App\Models\Author;
 
 class UpgradeRoleController extends Controller {
     public function index() {
+        if(!isset($_SESSION['current_user'])){
+            header('Location: /');
+        }
         $this->view('upgrade-role' , [
             'title' , 'Upgrade Role'
         ]);
