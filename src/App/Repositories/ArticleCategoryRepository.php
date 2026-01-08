@@ -11,8 +11,7 @@ class ArticleCategoryRepository
     private $data;
     public function __construct()
     {
-        $config = Config::get_config();
-        $this->data = new DataBase($config['database']);
+        $this->data = DataBase::get_data_instance();
     }
 
     public function add_cat_art($article_id, $cat_id)

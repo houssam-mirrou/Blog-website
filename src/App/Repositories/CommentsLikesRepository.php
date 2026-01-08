@@ -9,8 +9,7 @@ class CommentsLikesRepository {
     private $data;
     public function __construct()
     {
-        $config = Config::get_config();
-        $this->data = new DataBase($config['database']);
+        $this->data = DataBase::get_data_instance();
     }
     //user_id comment_id
     public function get_comment_likes($comment_id)

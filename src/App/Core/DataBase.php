@@ -10,8 +10,12 @@ use PDOException;
 class DataBase
 {
     private $connection;
-    public function __construct($config, $username = 'user', $password = 'password')
+    private static $instance;
+    private function __construct()
     {
+        $config = Config::get_config()['database'];
+        $username = 'user';
+        $password = 'password';
         $dsn = "mysql:host={$config['host']};dbname={$config['dbname']};charset={$config['charset']}";
         try {
             $this->connection = new PDO($dsn, $username, $password, [
@@ -21,6 +25,14 @@ class DataBase
         } catch (PDOException $e) {
             die("Database connection failed: " . $e->getMessage());
         }
+    }
+
+
+    public static function get_data_instance(){
+        if(self::$instance == null){
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
     public function query($query,$params = []){
