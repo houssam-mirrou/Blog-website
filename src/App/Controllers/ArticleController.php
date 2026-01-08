@@ -37,7 +37,7 @@ class ArticleController extends Controller
         $db_article = $article_services->get_article_by_id($id);
         $article = new Articles($db_article['title'], $db_article['body'], $db_article['created_date'], $db_article['id']);
 
-        $article_categories = $article_services->get_article_categories($db_article['author_id']);
+        $article_categories = $article_services->get_article_categories($db_article['id']);
         $article_user = $user_repository->get_user_by_id($db_article['author_id']);
         $art_user = new Author($article_user['first_name'], $article_user['last_name'], $article_user['email'], $article_user['phone_number'], $article_user['created_date']);
 

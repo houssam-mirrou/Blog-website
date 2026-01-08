@@ -72,7 +72,7 @@ class ArticleServices
         return $categories;
     }
 
-    public function update_article($title, $body, $author_id, $category_ids, $old_art_id)
+    public function update_article($title, $body, $category_ids, $old_art_id)
     {
         $errors = [];
         if (empty($title)) {
@@ -84,16 +84,14 @@ class ArticleServices
         if ($errors !== []) {
             return $errors;
         }
-        $this->delete_article_by_id($old_art_id);
+        
+        $this->article_category_services->delete_category_article_by_article_id($old_art_id);
 
-        $article = new Articles($title, $body);
-
-        $article_id = $this->article_repository->add_article($article, $author_id);
-
-        foreach ($category_ids as $cat_id) {
-            $this->article_category_services->add_article_category($article_id, $cat_id);
+        foreach($category_ids as $cat_id){
+            $this->article_category_services->add_article_category($old_art_id,$cat_id);
         }
-        return true;
+
+        return $this->article_repository->update_article($old_art_id,$title,$body);
     }
 
     public function get_user_by_id($id){

@@ -8,7 +8,6 @@ use App\Models\Articles;
 
 class ArticleRepository {
     private $data;
-
     public function __construct()
     {
         $this->data = DataBase::get_data_instance();
@@ -69,5 +68,16 @@ class ArticleRepository {
         $query = 'SELECT count(*) as art_num from articles';
         $result = $this->data->query($query);
         return $result[0]['art_num'];
+    }
+
+    public function update_article($article_id,$title,$body){
+        $query = 'UPDATE articles set title=:title , body=:body where id=:article_id';
+        $params = [
+            ':title'=>$title,
+            ':body'=>$body,
+            ':article_id' =>$article_id
+        ];
+        $result = $this->data->query($query,$params);
+        return $result;
     }
 }

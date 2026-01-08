@@ -17,4 +17,8 @@ class ArticleCategoryServices {
     public function get_article_categories_id($id){
         return $this->article_category_repository->get_article_categories_id($id);
     }
+
+    public function delete_category_article_by_article_id($article_id){
+        return $this->article_category_repository->delete_category_article_by_article_id($article_id);
+    }
 }

@@ -45,13 +45,11 @@ class EditArticleController extends Controller
     public function update_article()
     {
         $id=$_POST['article_id'];
-        $user_repositry = new UserRepository();
         $article_services = new ArticleServices();
         $title = $_POST['title'];
         $body = $_POST['body'];
         $category_ids = $_POST['category_ids'] ?? [];
-        $author_id = $user_repositry->get_user_id($_SESSION['current_user']->get_email());
-        $result = $article_services->update_article($title, $body, $author_id, $category_ids, $id);
+        $result = $article_services->update_article($title, $body, $category_ids, $id);
         if ($result === true) {
             header('Location: /dashboard-author');
             exit();

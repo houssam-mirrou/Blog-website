@@ -33,5 +33,14 @@ class ArticleCategoryRepository
         $result = $this->data->query($query,$params);
         return $result;
     }
+
+    public function delete_category_article_by_article_id($article_id){
+        $query = 'DELETE from articles_categories where article_id=:article_id';
+        $params = [
+            ':article_id'=>$article_id
+        ];
+        $result = $this->data->query($query,$params);
+        return $result;
+    }
     
 }
