@@ -23,6 +23,16 @@ class DashboardAdminController extends Controller
         if(!isset($_SESSION['current_user'])){
             header('Location: /');
         }
+        if (!isset($_SESSION['current_user'])) {
+            header('Location: /');
+        }
+        if ($_SESSION['current_user']->get_role() != 'admin') {
+            if ($_SESSION['current_user']->get_role() == 'reader') {
+                header('Location: /');
+            } else {
+                header('Location: /dashboard-author');
+            }
+        }
         $user_repositry = new UserRepository();
         $cat_repositry = new CategoryRepository();
         $art_services = new ArticleServices();
